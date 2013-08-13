@@ -1,13 +1,16 @@
 main_dir = '/home/egentry/Data/HST/PictorA/PSFs/drizzler/'
 
-artificial_star_dir = 'artificial_stars/'
+artificial_star_dir = main_dir + 'artificial_stars/'
+drizzled_dir        = main_dir + 'drizzled/'
+cropped_dir         = main_dir + 'cropped/'
+psf_rootname        = 'psf'
 
 
 from astropy.io import fits
 import os
 
 
-def main():
+def prepare():
     """ Prepare PSFs to be drizzled 
 
         Expects FLT + PSF fits files
@@ -24,8 +27,8 @@ def main():
 
     """
 
-    if not os.path.exists(main_dir + artificial_star_dir):
-        os.makedirs(main_dir + artificial_star_dir)
+    if not os.path.exists(artificial_star_dir):
+        os.makedirs(artificial_star_dir)
 
 
 
@@ -46,7 +49,7 @@ def main():
 
     
         psf_filename =         'psf_{}.fits'.format(Image_index)
-        flt_filename = 'ibjx01y{}q_flt.fits'.format(Image_index)
+        flt_filename = 'ibjx01y{}q_flt.fits'.format(Image_index)  # To be done later: accept more general filenames
         
         psf_hdulist = fits.open(main_dir + psf_filename)
         
@@ -73,22 +76,30 @@ def main():
             for y_i in xrange(psf_size_y):
                 flt_data[y_i + min_nonzero_y][x_i + min_nonzero_x] = psf_data[y_i][x_i] * 1e6
 
-        flt_hdulist.writeto(main_dir + artificial_star_dir + flt_filename, clobber=True)
+        flt_hdulist.writeto(artificial_star_dir + flt_filename, clobber=True)
         flt_hdulist.close()
         psf_hdulist.close()
 
-def drizzle():
+def drizzle(clean_files=True):
     """ 
-        FUNCTION NOT YET TESTED
+
     """
     from drizzlepac import astrodrizzle
+    import glob
+
+    if not os.path.exists(drizzled_dir):
+        os.makedirs(drizzled_dir)
 
     
 
-    astrodrizzle.AstroDrizzle('*flt.fits', output='psf', static=False, skysub=False,
+    astrodrizzle.AstroDrizzle(artificial_star_dir + '*flt.fits', output=drizzled_dir + 'psf', static=False, skysub=False,
         driz_separate=False, median=False, blot=False, driz_cr=False, 
         driz_combine=True, final_wht_type='EXP', final_pixfrac=0.7, final_bits=4096,
         final_wcs=True, final_scale=0.06666)
+
+    if clean_files == True:
+        for filename in glob.glob(artificial_star_dir +'*_final_mask.fits'):
+            os.remove(filename)
                         
 
 
@@ -99,11 +110,14 @@ def crop():
     
     import numpy as np
 
-    psf_rootname = 'psf'
+    if not os.path.exists(cropped_dir):
+        os.makedirs(cropped_dir)
 
-    psf_filename = psf_rootname + '_drz_sci.fits'
 
-    psf_hdulist = fits.open(main_dir + artificial_star_dir + psf_filename)
+
+    psf_filename = psf_rootname + '_drz_sci'
+
+    psf_hdulist = fits.open(drizzled_dir + psf_filename + '.fits')
 
     psf_data = psf_hdulist[0].data
 
@@ -132,14 +146,16 @@ def crop():
     psf_data_cropped = psf_data[min_nonzero_y : max_nonzero_y + 1, min_nonzero_x : max_nonzero_x + 1] * 1e-6
 
     psf_cropped_hdulist = fits.PrimaryHDU(psf_data_cropped)
-    psf_cropped_hdulist.writeto(main_dir + artificial_star_dir + 'psf_drz_sci_cropped.fits', clobber=True)
+    psf_cropped_hdulist.writeto(cropped_dir + psf_filename + '_cropped.fits', clobber=True)
     
-    psf_hdulist.close()    
+    psf_hdulist.close()
 
 
+def main():
 
-    
-    
-
+    prepare()
+    drizzle()
+    crop()
+   
 
     
