@@ -92,8 +92,8 @@ def drizzle(clean_files=True):
 
     
 
-    astrodrizzle.AstroDrizzle(artificial_star_dir + '*flt.fits', output=drizzled_dir + 'psf', static=False, skysub=False,
-        driz_separate=False, median=False, blot=False, driz_cr=False, 
+    astrodrizzle.AstroDrizzle(artificial_star_dir + '*flt.fits', output=drizzled_dir + 'psf', runfile=drizzled_dir + 'astrodrizzle.log',
+        preserve=False, static=False, skysub=True, driz_separate=False, median=False, blot=False, driz_cr=False, 
         driz_combine=True, final_wht_type='EXP', final_pixfrac=0.7, final_bits=4096,
         final_wcs=True, final_scale=0.06666)
 
@@ -143,7 +143,9 @@ def crop():
     min_nonzero_y = np.amin( valid_coords[0] )
     max_nonzero_y = np.amax( valid_coords[0] )
 
-    psf_data_cropped = psf_data[min_nonzero_y : max_nonzero_y + 1, min_nonzero_x : max_nonzero_x + 1] * 1e-6
+    print valid_coords
+
+    psf_data_cropped = psf_data[min_nonzero_y : max_nonzero_y + 1, min_nonzero_x : max_nonzero_x + 1]
 
     psf_cropped_hdulist = fits.PrimaryHDU(psf_data_cropped)
     psf_cropped_hdulist.writeto(cropped_dir + psf_filename + '_cropped.fits', clobber=True)
