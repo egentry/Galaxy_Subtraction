@@ -33,18 +33,8 @@ def drizzle(clean_files=True):
 
     astrodrizzle.AstroDrizzle('*flt.fits', output= drizzled_dir + 'f475w', clean=True, driz_separate=False,  
         median=False, blot=False, driz_cr=False, driz_combine=True, final_wht_type='EXP',  
-        final_pixfrac = 0.7, final_wcs=True, final_scale =0.06666 )
+        final_pixfrac = 0.7, final_wcs=True, final_scale =.01981 )
 
-### Handled by using "clean=True" in astrodrizzle call:
-#    if clean_files == True:
-#        for filename in glob.glob(main_dir +'*_final_mask.fits'):
-#            os.remove(filename)
-#        for filename in glob.glob(main_dir +'tmp*.fits'):
-#            os.remove(filename)
-#        for filename in glob.glob(main_dir +'*crmask.fits'):
-#            os.remove(filename)
-#        for filename in glob.glob(main_dir +'*_blt.fits'):
-#            os.remove(filename)
                         
 
 def main():

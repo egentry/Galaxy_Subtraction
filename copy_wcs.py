@@ -1,5 +1,5 @@
 from astropy.io import fits
-from astropy    import wcs
+#from astropy    import wcs
 import numpy as np
 import os
 
@@ -105,14 +105,13 @@ def test():
 
     main_dir = '/home/egentry/Data/HST/PictorA/main_galaxy/tmp/full_sized/'
 
-    filename_list = [   'tmp_galaxy_3.fits',
+    filename_list = [   'tmp_galaxy_1.fits',
                         'tmp_galaxy_2.fits'    ]
 
 #    for filename in filename_list:
-#        copy(filename)
+#        copy(main_dir + filename)
 
-    copy_galfit_output_wcs(main_dir + filename_list[0])
+#    copy_galfit_output_wcs(main_dir + filename_list[0])
 
-test()
 
     
