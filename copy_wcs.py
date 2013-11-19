@@ -75,7 +75,7 @@ def copy_galfit_output_wcs(target_filename):
                                 'WCSNAME'  ]
 
 
-    overall_hdulist = fits.open(main_dir + target_filename)
+    overall_hdulist = fits.open(target_filename)
 
     original_header = overall_hdulist[1].header
     model_header    = overall_hdulist[2].header
@@ -96,7 +96,7 @@ def copy_galfit_output_wcs(target_filename):
             
 
 
-    overall_hdulist.writeto(main_dir + target_filename, output_verify='fix', clobber=True)
+    overall_hdulist.writeto(target_filename, output_verify='fix', clobber=True)
 
     overall_hdulist.close()
 

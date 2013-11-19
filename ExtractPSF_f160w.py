@@ -6,7 +6,7 @@ import numpy as np
 import os
 
 
-def e():
+def extract():
     """ Extracts a PSF from a particular star in a particular dataset
 
         Expects a DRZ file from the HST Proposal 12261, sampled at 2x the resolution of the FLT 
@@ -59,6 +59,6 @@ def e():
     
     drz_hdulist.close()
 
-
+extract()
 
     
