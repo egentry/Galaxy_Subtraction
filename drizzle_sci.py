@@ -27,12 +27,14 @@ def drizzle(main_dir, drizzled_dir, filter_name, scale, clean_files=True):
     os.chdir(main_dir) # required, because astrodrizzle can't handle path names with capital letters
 
     # 1st run
-    astrodrizzle.AstroDrizzle('*flt.fits', output= drizzled_dir + filter_name, driz_combine=False, clean=True, preserve=False)
+    astrodrizzle.AstroDrizzle('*flt.fits', output= drizzled_dir + filter_name, 
+        driz_combine=False, clean=True, preserve=False)
 
-    astrodrizzle.AstroDrizzle('*flt.fits', output= drizzled_dir + filter_name, clean=True, driz_separate=False, preserve=False, 
-        median=False, blot=False, driz_cr=False, driz_combine=True, final_wht_type='EXP',  
-        final_pixfrac = 0.7, final_wcs=True, final_scale = scale)
-                        
+    astrodrizzle.AstroDrizzle('*flt.fits', output= drizzled_dir + filter_name, 
+        clean=True, driz_separate=False, preserve=False, skysub=False,
+        median=False, blot=False, driz_cr=False, driz_combine=True,   
+        final_wht_type='EXP', final_pixfrac = 0.7, final_wcs=True, 
+        final_units = 'counts', final_scale = scale)                  
 
 def main_f160w():
 
@@ -69,7 +71,7 @@ def main_f814w():
 def main():
     main_f160w()
     main_f475w()
-    main_f814w()
+    main_f814w()  
 
 main()
    
