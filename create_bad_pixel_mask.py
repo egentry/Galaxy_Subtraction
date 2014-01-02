@@ -58,56 +58,55 @@ def create_bad_pixel_mask(input_dir, output_dir, filter_name):
         print 'CTX Dimensions: ', ctx_size_x, ' by ' , ctx_size_y
         return
 
-    bad_pixel_data  = np.zeros( sci_data.shape )
+    # bad_pixel_data  = np.zeros( sci_data.shape )
 
-    for x_i in xrange(sci_size_x):
-        for y_i in xrange(sci_size_y):
-            if ctx_data[y_i][x_i] == 0:
-                bad_pixel_data[y_i][x_i] = 1
+    bad_pixel_data = np.logical_not( np.isfinite(sci_data) * ctx_data * wht_data) * 1
 
-            if np.isnan(sci_data[y_i][x_i]):
-                bad_pixel_data[y_i][x_i] = 1               
-                sci_data[y_i][x_i] = 0
+    # for x_i in xrange(sci_size_x):
+    #     for y_i in xrange(sci_size_y):
+    #         if ctx_data[y_i][x_i] == 0:
+    #             bad_pixel_data[y_i][x_i] = 1
+
+    #         if np.isnan(sci_data[y_i][x_i]):
+    #             bad_pixel_data[y_i][x_i] = 1               
+    #             sci_data[y_i][x_i] = 0
 
             
-            if np.isinf(sci_data[y_i][x_i]):
-                bad_pixel_data[y_i][x_i] = 1
-                # sci_data[y_i][x_i] = 0
+    #         if np.isinf(sci_data[y_i][x_i]):
+    #             bad_pixel_data[y_i][x_i] = 1
+    #             # sci_data[y_i][x_i] = 0
 
-            if wht_data[y_i][x_i] == 0:
-                bad_pixel_data[y_i][x_i] = 1 
-                # wht_data[y_i][x_i] = 1       
+    #         if wht_data[y_i][x_i] == 0:
+    #             bad_pixel_data[y_i][x_i] = 1 
+    #             # wht_data[y_i][x_i] = 1       
 
 
 
     bad_pixel_hdulist = fits.PrimaryHDU(bad_pixel_data)
-    bad_pixel_hdulist.writeto(output_dir + filter_name + '_bad_pixel_test.fits', clobber=True)
+    bad_pixel_hdulist.writeto(output_dir + filter_name + '_bad_pixel.fits', clobber=True)
 
     print filter_name, ' pixel mask done \n'
 
     
 def main_f160w():
 
-    input_dir   = '/home/egentry/Data/HST/PictorA/IBJX01010/drizzled_test/'
+    input_dir   = '/home/egentry/Data/HST/PictorA/IBJX01010/drizzled/'
     output_dir  = '/home/egentry/Data/HST/PictorA/bad_pixel_masks/'
     filter_name = 'f160w'
-    exptime     =  2708.81
 
     create_bad_pixel_mask(input_dir, output_dir, filter_name)
 
 def main_f475w():
-    input_dir   = '/home/egentry/Data/HST/PictorA/IBJX01020/drizzled_test/'
+    input_dir   = '/home/egentry/Data/HST/PictorA/IBJX01020/drizzled/'
     output_dir  = '/home/egentry/Data/HST/PictorA/bad_pixel_masks/'
     filter_name = 'f475w'
-    exptime     =  1299.0
 
     create_bad_pixel_mask(input_dir, output_dir, filter_name)
 
 def main_f814w():
-    input_dir   = '/home/egentry/Data/HST/PictorA/IBJX01030/drizzled_test/'
+    input_dir   = '/home/egentry/Data/HST/PictorA/IBJX01030/drizzled/'
     output_dir  = '/home/egentry/Data/HST/PictorA/bad_pixel_masks/'
     filter_name = 'f814w'
-    exptime     =  1200.0
 
     create_bad_pixel_mask(input_dir, output_dir, filter_name)
 
