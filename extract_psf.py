@@ -31,7 +31,7 @@ def extract(drz_dir, filter_name, psf_center, psf_width, psf_height):
     # print max_psf_y
 
     
-    drz_filename = drz_dir + filter_name + 'drz_sci_test.fits'
+    drz_filename = drz_dir + filter_name + '_drz_sci.fits'
     psf_dir      = '/home/egentry/Data/HST/PictorA/PSFs/' + filter_name + '/extracted/' # to be created
     # psf_medsub_filename = 'psf_medsub_extracted_test.fits' # to be created
 
@@ -52,7 +52,7 @@ def extract(drz_dir, filter_name, psf_center, psf_width, psf_height):
 
 
     psf_data_hdu = fits.PrimaryHDU(psf_data)
-    psf_data_hdu.writeto(psf_dir + filter_name + '_extracted.fits', clobber=True)
+    psf_data_hdu.writeto(psf_dir + filter_name + '_psf_drz_sci_extracted.fits', clobber=True)
 
     
     drz_hdulist.close()
