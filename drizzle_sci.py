@@ -28,13 +28,22 @@ def drizzle(main_dir, drizzled_dir, filter_name, scale, clean_files=True):
 
     # 1st run
     astrodrizzle.AstroDrizzle('*flt.fits', output= drizzled_dir + filter_name, 
-        driz_combine=False, clean=True, preserve=False)
+        driz_combine=False, preserve=False)
 
     astrodrizzle.AstroDrizzle('*flt.fits', output= drizzled_dir + filter_name, 
-        clean=True, driz_separate=False, preserve=False, skysub=False,
+        driz_separate=False, preserve=False, skysub=False,
         median=False, blot=False, driz_cr=False, driz_combine=True,   
         final_wht_type='EXP', final_pixfrac = 0.7, final_wcs=True, 
-        final_units = 'counts', final_scale = scale)                  
+        final_units = 'counts', final_scale = scale)      
+
+    # astrodrizzle.AstroDrizzle('*flt.fits', output= drizzled_dir + filter_name, 
+    #     driz_combine=False,  preserve=False, driz_cr_snr='3.5 3.0')
+
+    # astrodrizzle.AstroDrizzle('*flt.fits', output= drizzled_dir + filter_name, 
+    #     driz_separate=False, preserve=False, skysub=False,
+    #     median=False, blot=False, driz_cr=False, driz_combine=True,   
+    #     final_wht_type='EXP', final_pixfrac = 0.7, final_wc s=True, 
+    #     final_scale = scale)               
 
 def main_f160w():
 

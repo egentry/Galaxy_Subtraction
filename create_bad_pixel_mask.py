@@ -28,7 +28,6 @@ def create_bad_pixel_mask(input_dir, output_dir, filter_name):
 ###
 
 
-
     sci_hdulist = fits.open(input_dir + sci_filename)
     wht_hdulist = fits.open(input_dir + wht_filename)
     ctx_hdulist = fits.open(input_dir + ctx_filename)
@@ -62,28 +61,20 @@ def create_bad_pixel_mask(input_dir, output_dir, filter_name):
 
     bad_pixel_data = np.logical_not( np.isfinite(sci_data) * ctx_data * wht_data) * 1
 
-    # for x_i in xrange(sci_size_x):
-    #     for y_i in xrange(sci_size_y):
-    #         if ctx_data[y_i][x_i] == 0:
-    #             bad_pixel_data[y_i][x_i] = 1
+    # # set infinite pixels to zero, and set corresponding wht, ctx values to 0
+    # ctx_data = ctx_data * np.isfinite(sci_data)
+    # wht_data = wht_data * np.isfinite(sci_data)
+    # sci_data = sci_data * np.isfinite(sci_data)
 
-    #         if np.isnan(sci_data[y_i][x_i]):
-    #             bad_pixel_data[y_i][x_i] = 1               
-    #             sci_data[y_i][x_i] = 0
-
-            
-    #         if np.isinf(sci_data[y_i][x_i]):
-    #             bad_pixel_data[y_i][x_i] = 1
-    #             # sci_data[y_i][x_i] = 0
-
-    #         if wht_data[y_i][x_i] == 0:
-    #             bad_pixel_data[y_i][x_i] = 1 
-    #             # wht_data[y_i][x_i] = 1       
 
 
 
     bad_pixel_hdulist = fits.PrimaryHDU(bad_pixel_data)
     bad_pixel_hdulist.writeto(output_dir + filter_name + '_bad_pixel.fits', clobber=True)
+
+    # sci_hdulist.writeto(input_dir + sci_filename, clobber=True)
+    # wht_hdulist.writeto(input_dir + wht_filename, clobber=True)
+    # ctx_hdulist.writeto(input_dir + ctx_filename, clobber=True)
 
     print filter_name, ' pixel mask done \n'
 

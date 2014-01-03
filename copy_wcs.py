@@ -45,7 +45,7 @@ def copy_galfit_output_wcs(target_filename):
                                 'BINAXIS1',
                                 'BINAXIS2',
                                 'SAMPNUM',
-                                'SAMPTIME',
+                                'EXPTIME',
                                 'DELTATIM',
                                 'ROUTTIME',
                                 'TDFTRANS',
@@ -72,7 +72,13 @@ def copy_galfit_output_wcs(target_filename):
                                 'CD1_2O', 
                                 'CD2_1O', 
                                 'CD2_2O', 
-                                'WCSNAME'  ]
+                                'WCSNAME',
+                                'PHOTMODE',
+                                'PHOTFLAM',
+                                'PHOTFNU',
+                                'PHOTZPT',
+                                'PHOTPLAM',
+                                'PHOTBW' ]
 
 
     overall_hdulist = fits.open(target_filename)
@@ -87,7 +93,7 @@ def copy_galfit_output_wcs(target_filename):
         if card_name not in original_header:
             print 'Card not found in header: ', card_name
             print 'Check if it is needed?'
-            return
+            # return
         else:
 #            print 'Found card: ', card_name
             card = card_list[card_name]
@@ -100,18 +106,18 @@ def copy_galfit_output_wcs(target_filename):
 
     overall_hdulist.close()
 
+def main():
 
-def test():
+    main_dir = '/home/egentry/Data/HST/PictorA/main_galaxy/'
 
-    main_dir = '/home/egentry/Data/HST/PictorA/main_galaxy/tmp/full_sized/'
+    filenames = [   'f160w/f160w_output.fits',
+                    'f475w/f475w_output.fits',
+                    'f814w/f814w_output.fits']
 
-    filename_list = [   'tmp_galaxy_1.fits',
-                        'tmp_galaxy_2.fits'    ]
+    for name in filenames:
+        copy_galfit_output_wcs(main_dir + name)
 
-#    for filename in filename_list:
-#        copy(main_dir + filename)
-
-#    copy_galfit_output_wcs(main_dir + filename_list[0])
+main()
 
 
     
